@@ -81,7 +81,7 @@ function QuoteGenerator() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-gray-100">
+    <div className="bg-white rounded-2xl shadow-xl p-8 mb-16 border border-gray-100">
       {!quote ? (
         <>
           {/* Progress indicator */}
@@ -161,24 +161,26 @@ function QuoteGenerator() {
           {step === 2 && (
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-800 mb-2">Ship from</label>
+                <label className="block text-sm font-medium text-gray-800 mb-2">Ship from (Postcode)</label>
                 <input
                   type="text"
-                  placeholder="New York, United States"
+                  placeholder="10001, United States"
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 text-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   value={formData.origin}
                   onChange={(e) => setFormData({...formData, origin: e.target.value})}
                 />
+                <p className="text-xs text-gray-600 mt-1">Format: Postcode, Country</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-800 mb-2">Ship to</label>
+                <label className="block text-sm font-medium text-gray-800 mb-2">Ship to (Postcode)</label>
                 <input
                   type="text"
-                  placeholder="London, United Kingdom"
+                  placeholder="SW1A 1AA, United Kingdom"
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 text-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   value={formData.destination}
                   onChange={(e) => setFormData({...formData, destination: e.target.value})}
                 />
+                <p className="text-xs text-gray-600 mt-1">Format: Postcode, Country</p>
               </div>
             </div>
           )}
@@ -297,7 +299,7 @@ function QuoteGenerator() {
   );
 }
 
-// Simplified Package Tracking Component
+// Full-width Package Tracking Component
 function PackageTracking() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [trackingResult, setTrackingResult] = useState<TrackingResult | null>(null);
@@ -318,7 +320,6 @@ function PackageTracking() {
           { status: "Order Placed", date: "Dec 15, 2:30 PM", completed: true },
           { status: "Package Picked Up", date: "Dec 16, 9:15 AM", completed: true },
           { status: "In Transit", date: "Dec 17, 11:45 AM", completed: true },
-          { status: "Out for Delivery", date: "Dec 18, Expected", completed: false },
           { status: "Delivered", date: "Dec 18, Expected", completed: false }
         ]
       });
@@ -335,7 +336,7 @@ function PackageTracking() {
       </div>
 
       <form onSubmit={handleTrack} className="mb-6">
-        <div className="flex gap-3">
+        <div className="flex gap-3 max-w-2xl mx-auto">
           <input
             type="text"
             placeholder="1Z999AA1234567890"
@@ -354,24 +355,22 @@ function PackageTracking() {
       </form>
 
       {trackingResult && (
-        <div className="space-y-6">
-          <div className="text-center p-6 bg-green-50 rounded-xl">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center p-6 bg-green-50 rounded-xl mb-8">
             <div className="text-2xl font-bold text-green-600 mb-1">{trackingResult.status}</div>
             <p className="text-green-800 mb-2">📍 {trackingResult.location}</p>
             <p className="text-sm text-green-700">Expected: {trackingResult.estimatedDelivery}</p>
           </div>
           
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {trackingResult.timeline.map((event, index) => (
-              <div key={index} className="flex items-start space-x-4">
-                <div className={`w-4 h-4 rounded-full mt-1 ${event.completed ? 'bg-green-500' : 'bg-gray-300'}`} />
-                <div className="flex-1">
-                  <div className={`font-medium ${event.completed ? 'text-gray-900' : 'text-gray-600'}`}>
-                    {event.status}
-                  </div>
-                  <div className={`text-sm ${event.completed ? 'text-gray-700' : 'text-gray-500'}`}>
-                    {event.date}
-                  </div>
+              <div key={index} className="text-center">
+                <div className={`w-4 h-4 rounded-full mx-auto mb-3 ${event.completed ? 'bg-green-500' : 'bg-gray-300'}`} />
+                <div className={`font-medium text-sm mb-1 ${event.completed ? 'text-gray-900' : 'text-gray-600'}`}>
+                  {event.status}
+                </div>
+                <div className={`text-xs ${event.completed ? 'text-gray-700' : 'text-gray-500'}`}>
+                  {event.date}
                 </div>
               </div>
             ))}
@@ -382,8 +381,9 @@ function PackageTracking() {
   );
 }
 
-// Streamlined AI Assistant
-function AIAssistant() {
+// Floating AI Chat Bubble
+function FloatingChatBubble() {
+  const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([
     { role: "assistant", content: "Hi! I'm here to help with shipping questions. Ask me about costs, duties, VAT, or tracking!" }
@@ -422,59 +422,91 @@ function AIAssistant() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-      <div className="text-center mb-6">
-        <div className="text-4xl mb-4">🤖</div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">AI Shipping Assistant</h3>
-        <p className="text-gray-700">Get instant answers to your shipping questions</p>
-      </div>
-
-      {/* Quick questions */}
-      <div className="mb-6">
-        <p className="text-sm font-medium text-gray-800 mb-3">Quick questions:</p>
-        <div className="flex flex-wrap gap-2">
-          {quickQuestions.map((q, index) => (
+    <div className="fixed bottom-6 right-6 z-50">
+      {/* Chat Window */}
+      {isOpen && (
+        <div className="absolute bottom-20 right-0 bg-white rounded-2xl shadow-2xl border border-gray-200 w-80 h-96 flex flex-col animate-in slide-in-from-bottom-5 duration-200">
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-2xl">
+            <div className="flex items-center space-x-2">
+              <div className="text-xl">🤖</div>
+              <div>
+                <h4 className="font-semibold text-white">AI Assistant</h4>
+                <p className="text-xs text-blue-100">Online now</p>
+              </div>
+            </div>
             <button
-              key={index}
-              onClick={() => handleSend(q)}
-              className="px-3 py-2 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+              onClick={() => setIsOpen(false)}
+              className="text-white hover:text-blue-200 transition-colors"
             >
-              {q}
+              ✕
             </button>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className="h-64 overflow-y-auto mb-6 space-y-4 border rounded-xl p-4 bg-gray-50">
-        {chat.map((msg, index) => (
-          <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-xs px-4 py-2 rounded-2xl ${
-              msg.role === 'user' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-white text-gray-800 shadow-sm'
-            }`}>
-              {msg.content}
+          {/* Quick Questions */}
+          <div className="p-3 border-b border-gray-100">
+            <p className="text-xs font-medium text-gray-600 mb-2">Quick questions:</p>
+            <div className="flex flex-wrap gap-1">
+              {quickQuestions.map((q, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSend(q)}
+                  className="px-2 py-1 text-xs bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
+                >
+                  {q}
+                </button>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="flex gap-3">
-        <input
-          type="text"
-          placeholder="Ask about shipping costs, duties, tracking..."
-          className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-        />
-        <button
-          onClick={() => handleSend()}
-          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors"
-        >
-          Send
-        </button>
-      </div>
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-3">
+            {chat.map((msg, index) => (
+              <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm ${
+                  msg.role === 'user' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {msg.content}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Input */}
+          <div className="p-3 border-t border-gray-100">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Type your message..."
+                className="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              />
+              <button
+                onClick={() => handleSend()}
+                className="px-3 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+      >
+        {isOpen ? (
+          <span className="text-xl">✕</span>
+        ) : (
+          <div className="text-xl">💬</div>
+        )}
+      </button>
     </div>
   );
 }
@@ -483,7 +515,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Simplified Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center">
             <div className="flex items-center space-x-3">
@@ -514,18 +546,20 @@ export default function Home() {
       {/* Main Features */}
       <main className="max-w-6xl mx-auto px-6 pb-16">
         <div className="space-y-16">
-          {/* Quote Generator */}
+          {/* Quote Generator - Full Width */}
           <section>
             <QuoteGenerator />
           </section>
 
-          {/* Secondary Features */}
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Package Tracking - Full Width */}
+          <section>
             <PackageTracking />
-            <AIAssistant />
           </section>
         </div>
       </main>
+
+      {/* Floating Chat Bubble */}
+      <FloatingChatBubble />
     </div>
   );
 }
