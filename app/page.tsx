@@ -9,6 +9,7 @@ interface QuoteResult {
   duties: string;
   vat: string;
   total: string;
+  estimatedDays?: number;
 }
 
 interface TrackingEvent {
@@ -82,10 +83,12 @@ function QuoteGenerator() {
 
   return (
     <div className="bg-white rounded-2xl shadow-xl p-8 mb-16 border border-gray-100">
-      {!quote ? (
-        <>
+      {!quote && (
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">Get Your Shipping Quote</h3>
+          
           {/* Progress indicator */}
-          <div className="flex items-center justify-center mb-8">
+          <div className="flex items-center justify-center mb-6">
             <div className="flex items-center space-x-4">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="flex items-center">
@@ -100,15 +103,20 @@ function QuoteGenerator() {
             </div>
           </div>
 
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Get Your Shipping Quote</h3>
-            <p className="text-gray-700">
+          {/* Step description with improved styling */}
+          <div className="mb-8">
+            <div className="inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-2xl text-sm font-medium shadow-md">
+              <div className="w-2 h-2 bg-white rounded-full mr-3 opacity-80"></div>
               {step === 1 && "Tell us about your package dimensions"}
               {step === 2 && "Where are you shipping from and to?"}
               {step === 3 && "Choose your shipping speed"}
-            </p>
+            </div>
           </div>
+        </div>
+      )}
 
+      {!quote ? (
+        <>
           {/* Step 1: Package Details */}
           {step === 1 && (
             <div className="space-y-6">
@@ -169,7 +177,6 @@ function QuoteGenerator() {
                   value={formData.origin}
                   onChange={(e) => setFormData({...formData, origin: e.target.value})}
                 />
-                <p className="text-xs text-gray-600 mt-1">Enter postcode only</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-800 mb-2">Ship to (Postcode)</label>
@@ -180,7 +187,6 @@ function QuoteGenerator() {
                   value={formData.destination}
                   onChange={(e) => setFormData({...formData, destination: e.target.value})}
                 />
-                <p className="text-xs text-gray-600 mt-1">Enter postcode only</p>
               </div>
             </div>
           )}
@@ -252,33 +258,54 @@ function QuoteGenerator() {
           </div>
         </>
       ) : (
-        /* Quote Results */
+        /* Quote Results - New Format */
         <div className="text-center">
-          <div className="text-4xl mb-4">📦</div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">Your Shipping Quote</h3>
-          <p className="text-gray-700 mb-8">From {formData.origin} to {formData.destination}</p>
+          <div className="text-4xl mb-6">📦</div>
           
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6">
-            <div className="text-3xl font-bold text-blue-600 mb-2">£{quote.total}</div>
-            <p className="text-gray-700">Total cost including all fees</p>
+          {/* Summary Line - Improved Format */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 mb-8 border border-green-200">
+            <div className="text-3xl font-bold text-green-600 mb-3">
+              Total: £{quote.total} | ETA: {quote.estimatedDays || 2} working days
+            </div>
+            <div className="flex items-center justify-center text-gray-700">
+              <span className="text-sm bg-white px-3 py-1 rounded-full border">
+                📍 {formData.origin} → {formData.destination}
+              </span>
+            </div>
           </div>
 
-          <div className="space-y-3 text-left mb-8">
-            <div className="flex justify-between py-2">
-              <span className="text-gray-700">Base shipping</span>
-              <span className="font-medium text-gray-900">£{quote.baseRate}</span>
-            </div>
-            <div className="flex justify-between py-2">
-              <span className="text-gray-700">Fuel surcharge</span>
-              <span className="font-medium text-gray-900">£{quote.fuel}</span>
-            </div>
-            <div className="flex justify-between py-2">
-              <span className="text-gray-700">Import duties</span>
-              <span className="font-medium text-gray-900">£{quote.duties}</span>
-            </div>
-            <div className="flex justify-between py-2 border-t pt-3">
-              <span className="text-gray-700">VAT (20%)</span>
-              <span className="font-medium text-gray-900">£{quote.vat}</span>
+          {/* Breakdown */}
+          <div className="max-w-md mx-auto text-left mb-8">
+            <h4 className="font-semibold text-gray-900 mb-4">Breakdown:</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center text-gray-700">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
+                  Freight
+                </span>
+                <span className="font-medium text-gray-900">£{quote.baseRate}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center text-gray-700">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
+                  Fuel
+                </span>
+                <span className="font-medium text-gray-900">£{quote.fuel}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center text-gray-700">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
+                  Remote area
+                </span>
+                <span className="font-medium text-gray-900">£{quote.duties}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center text-gray-700">
+                  <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
+                  Dim-weight adj
+                </span>
+                <span className="font-medium text-gray-900">£{quote.vat}</span>
+              </div>
             </div>
           </div>
 
@@ -364,8 +391,12 @@ function PackageTracking() {
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {trackingResult.timeline.map((event, index) => (
-              <div key={index} className="text-center">
-                <div className={`w-4 h-4 rounded-full mx-auto mb-3 ${event.completed ? 'bg-green-500' : 'bg-gray-300'}`} />
+              <div key={index} className="text-center relative">
+                <div className={`w-4 h-4 rounded-full mx-auto mb-3 relative z-10 ${event.completed ? 'bg-green-500' : 'bg-gray-300'}`} />
+                {/* Dotted line connecting to next step */}
+                {index < trackingResult.timeline.length - 1 && (
+                  <div className="hidden md:block absolute top-2 left-1/2 w-full h-0.5 border-t-2 border-dotted border-gray-300 transform translate-x-2 -translate-y-1/2" />
+                )}
                 <div className={`font-medium text-sm mb-1 ${event.completed ? 'text-gray-900' : 'text-gray-600'}`}>
                   {event.status}
                 </div>
@@ -529,22 +560,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-6 py-16 text-center">
-        <h2 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
-          Shipping costs,<br />
-          <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            crystal clear
-          </span>
-        </h2>
-        <p className="text-xl text-gray-800 max-w-2xl mx-auto mb-12 leading-relaxed">
-          Get instant quotes with complete cost breakdowns, track packages in real-time, 
-          and understand exactly what you'll pay—no surprises, no hidden fees.
-        </p>
-      </section>
-
       {/* Main Features */}
-      <main className="max-w-6xl mx-auto px-6 pb-16">
+      <main className="max-w-6xl mx-auto px-6 pt-16 pb-16">
         <div className="space-y-16">
           {/* Quote Generator - Full Width */}
           <section>
