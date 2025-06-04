@@ -164,23 +164,23 @@ function QuoteGenerator() {
                 <label className="block text-sm font-medium text-gray-800 mb-2">Ship from (Postcode)</label>
                 <input
                   type="text"
-                  placeholder="10001, United States"
+                  placeholder="10001"
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 text-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   value={formData.origin}
                   onChange={(e) => setFormData({...formData, origin: e.target.value})}
                 />
-                <p className="text-xs text-gray-600 mt-1">Format: Postcode, Country</p>
+                <p className="text-xs text-gray-600 mt-1">Enter postcode only</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-800 mb-2">Ship to (Postcode)</label>
                 <input
                   type="text"
-                  placeholder="SW1A 1AA, United Kingdom"
+                  placeholder="SW1A 1AA"
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 text-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   value={formData.destination}
                   onChange={(e) => setFormData({...formData, destination: e.target.value})}
                 />
-                <p className="text-xs text-gray-600 mt-1">Format: Postcode, Country</p>
+                <p className="text-xs text-gray-600 mt-1">Enter postcode only</p>
               </div>
             </div>
           )}

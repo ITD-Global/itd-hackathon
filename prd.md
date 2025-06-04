@@ -34,13 +34,6 @@ Customers struggle with shipping complexity, needing to juggle multiple tools fo
 
 A unified AI-powered shipping assistant that provides instant quotes with full cost breakdowns, real-time package tracking with intelligent updates, and clear explanations of duties and VAT charges - all accessible through simple, conversational interactions via a floating chat interface.
 
-## Target Users
-
-- **Online shoppers** who frequently purchase from international retailers
-- **Small business owners** who ship products regularly
-- **E-commerce customers** confused by shipping costs and delivery timelines
-- **International buyers** needing clarity on duties and taxes
-
 ## Core Features (Implemented)
 
 ### 1. Multi-Step Quote Generator ✅
