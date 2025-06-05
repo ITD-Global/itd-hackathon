@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ITD Hackathon 2025 - AI Shipping Copilot
 
-## Getting Started
+A modern shipping platform that combines AI-powered quotes and transparent tracking with a clean, intuitive interface.
 
-First, run the development server:
+## 🚀 Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+├── frontend/          # Next.js 15 + React 19 + TypeScript
+├── backend/           # Go API with Chi router  
+├── prd.md            # Product Requirements Document
+└── README.md         # This file
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Frontend
+- **Framework**: Next.js 15.3.3 with Turbopack
+- **Language**: TypeScript + React 19
+- **Styling**: Tailwind CSS
+- **UI**: Modern responsive design with AI chat interface
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Backend  
+- **Language**: Go 1.24
+- **Router**: Chi v5 
+- **Dependencies**: OpenAI SDK, GoDotEnv
+- **Endpoints**: `/quote` and `/parcel` (tracking)
 
-## Learn More
+## 🏃‍♂️ Quick Start
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Setup Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Frontend runs on: http://localhost:3000
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Setup Backend  
+```bash
+cd backend
+go mod tidy
+go run main.go
+```
+Backend runs on: http://localhost:8080
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Full Development (Both Services)
+```bash
+# Terminal 1 - Backend
+cd backend && go run main.go
 
-## Deploy on Vercel
+# Terminal 2 - Frontend  
+cd frontend && npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📦 Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### ✅ Quote Generator
+- 3-step wizard: Dimensions → Locations → Speed
+- Real-time cost breakdown (freight, fuel, duties, VAT)
+- Postcode-based shipping calculations
+- Multiple speed options (Standard, Express, Overnight)
+
+### ✅ Package Tracking
+- Real-time status updates with visual timeline
+- Expected delivery estimates
+- Detailed shipment history
+
+### ✅ AI Assistant
+- Floating chat interface
+- Quick question buttons
+- Shipping guidance and support
+
+## 🔗 API Integration
+
+The frontend integrates with the Go backend via:
+
+- `POST /quote` - Generate shipping quotes
+- `POST /parcel` - Track package status
+
+API client handles real API calls with proper error handling and fallbacks.
+
+## 🌟 UI/UX Highlights
+
+- **Premium Design**: Gradient backgrounds, smooth animations, modern shadows
+- **Responsive Layout**: Mobile-first approach with desktop enhancements  
+- **Progressive Disclosure**: Step-by-step flows with validation
+- **Visual Feedback**: Loading states, hover effects, status indicators
+
+## 📋 Development
+
+### Frontend Commands
+```bash
+cd frontend
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run lint         # Run ESLint
+```
+
+### Backend Commands
+```bash
+cd backend
+go run main.go       # Start development server
+go mod tidy          # Install dependencies
+go build             # Build for production
+```
+
+## 🚀 Deployment
+
+### Frontend (Vercel)
+```bash
+cd frontend
+npm run build
+# Deploy to Vercel
+```
+
+### Backend (Docker/Cloud)
+```bash
+cd backend
+go build -o app
+# Deploy binary to cloud provider
+```
+
+---
+
+**Current Branch**: `dubmmo-development`  
+**Live Demo**: Frontend running on localhost:3000  
+**API**: Backend running on localhost:8080

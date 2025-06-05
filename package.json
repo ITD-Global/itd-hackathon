@@ -1,25 +1,22 @@
 {
-  "name": "nextjs",
-  "version": "0.1.0",
-  "private": true,
+  "name": "itd-hackathon",
+  "version": "1.0.0",
+  "description": "AI Shipping Copilot - ITD Hackathon 2025",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "15.3.3",
-    "react": "^19.0.0",
-    "react-chatbot-kit": "^2.2.2",
-    "react-dom": "^19.0.0"
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && go run main.go",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && go build -o app",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && go mod tidy",
+    "setup": "npm run install:frontend && npm run install:backend"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
-}
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["shipping", "ai", "logistics", "nextjs", "go", "typescript"],
+  "author": "ITD Hackathon Team",
+  "license": "MIT"
+} 

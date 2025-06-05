@@ -1,0 +1,40 @@
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:17:38.017239+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:17:38.017943+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:17:38.159317+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:17:38.15944+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:03.867991+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:03.868257+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:03.885935+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:03.886028+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:53.722562+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:53.723524+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:53.898137+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:18:53.898195+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:13.631754+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:13.651396+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:13.788238+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:13.7883+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:38.006848+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:38.008033+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:38.151721+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:20:38.151801+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:24:39.422173+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:24:39.423476+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:24:39.591998+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T19:24:39.592049+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T20:22:51.769868+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T20:22:51.770333+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T20:22:51.919385+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-04T20:22:51.919447+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T09:21:41.885403+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T09:21:41.887601+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T09:21:42.811247+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T09:21:42.811337+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:02:37.78235+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:02:37.782921+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:02:38.126452+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:02:38.126551+01:00","details":{"output":null}}
+{"type":"agent_start","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:03:41.50077+01:00","details":{"input":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"}}}
+{"type":"model_request","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:03:41.501433+01:00","details":{"model":"gpt-4.1","prompt":{"weight":1,"length":20,"height":20,"width":20,"senderPostcode":"WA14 4NB","receiverPostcode":"WA14 3ET","serviceSpeed":"5-7 Days"},"tools":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:03:41.660538+01:00","details":{"output":null}}
+{"type":"agent_end","agent_name":"OrchestratorAgent","timestamp":"2025-06-05T10:03:41.660586+01:00","details":{"output":null}}
