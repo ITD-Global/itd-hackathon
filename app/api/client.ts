@@ -15,10 +15,16 @@ export interface QuoteRequest {
   serviceSpeed: 'standard' | 'express' | 'overnight';
 }
 
-export interface QuoteResponse {
-  price: number;
-  currency: string;
-}
+type QuoteResponse = {
+  prices: Price[];
+  estimatedAt: string; // ISO date string format
+  currency?: string;
+};
+
+type Price = {
+  amount: number;
+  charge: string;
+};
 
 export interface TrackingRequest {
   trackingId: string;

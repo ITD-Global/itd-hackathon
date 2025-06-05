@@ -4,15 +4,16 @@ import { useState } from "react";
 import { apiClient, APIError, QuoteRequest, getCurrencySymbol } from "./api/client";
 
 // Type definitions
-interface QuoteResult {
-  baseRate: string;
-  fuel: string;
-  duties: string;
-  vat: string;
-  total: string;
-  currency: string;
-  estimatedDays?: number;
-}
+type QuoteResult = {
+  prices: Price[];
+  estimatedAt: string; // ISO date string format
+  currency?: string;
+};
+
+type Price = {
+  amount: number;
+  charge: string;
+};
 
 interface TrackingEvent {
   status: string;
@@ -69,24 +70,14 @@ function QuoteGenerator() {
 
       // Call real API
       const response = await apiClient.getQuote(quoteRequest);
+
+      console.log(response);
       
       // Transform API response to frontend format
       // Since API only returns total price, we'll estimate breakdown
-      const totalPrice = response.price;
-      const baseRate = totalPrice * 0.65; // ~65% base rate
-      const fuel = totalPrice * 0.15;     // ~15% fuel
-      const duties = totalPrice * 0.10;   // ~10% duties  
-      const vat = totalPrice * 0.10;      // ~10% VAT
+      //const totalPrice = response.prices.reduce((sum, price) => sum + price.amount, 0);
       
-      setQuote({
-        baseRate: baseRate.toFixed(2),
-        fuel: fuel.toFixed(2),
-        duties: duties.toFixed(2),
-        vat: vat.toFixed(2),
-        total: totalPrice.toFixed(2),
-        currency: response.currency,
-        estimatedDays: formData.speed === 'overnight' ? 1 : formData.speed === 'express' ? 3 : 7
-      });
+      setQuote(response);
       
       setStep(4); // Move to summary step
     } catch (err) {
@@ -278,13 +269,13 @@ function QuoteGenerator() {
           {/* Enhanced Summary Layout */}
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 mb-6 border border-green-200">
             <div className="text-4xl font-bold text-green-600 mb-4">
-              {getCurrencySymbol(quote.currency)}{quote.total}
+              {getCurrencySymbol(quote.currency ?? "GBP")}{quote.prices.reduce((sum, price) => sum + price.amount, 0).toFixed(2)}
             </div>
             <div className="flex items-center justify-center space-x-6 text-gray-700 mb-3">
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium">🕒 ETA:</span>
                 <span className="text-sm bg-white px-3 py-1 rounded-full border font-semibold">
-                  {quote.estimatedDays || 2} working days
+                  {new Date(quote.estimatedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                 </span>
               </div>
               <div className="w-px h-4 bg-gray-300"></div>
@@ -301,58 +292,31 @@ function QuoteGenerator() {
           <div className="max-w-md mx-auto mb-6">
             <h4 className="font-semibold text-gray-900 mb-3 text-left">Cost Breakdown:</h4>
             <div className="bg-gray-50 rounded-xl p-4">
-              <table className="w-full">
-                <tbody>
-                  <tr className="border-b border-gray-200 last:border-b-0">
-                    <td className="py-2 text-left text-gray-700">
-                      <span className="flex items-center">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                        Freight
-                      </span>
-                    </td>
-                    <td className="py-2 text-right font-medium text-gray-900">{getCurrencySymbol(quote.currency)}{quote.baseRate}</td>
-                  </tr>
-                  <tr className="border-b border-gray-200 last:border-b-0">
-                    <td className="py-2 text-left text-gray-700">
-                      <span className="flex items-center">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                        Fuel
-                      </span>
-                    </td>
-                    <td className="py-2 text-right font-medium text-gray-900">{getCurrencySymbol(quote.currency)}{quote.fuel}</td>
-                  </tr>
-                  <tr className="border-b border-gray-200 last:border-b-0">
-                    <td className="py-2 text-left text-gray-700">
-                      <span className="flex items-center">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                        Remote area
-                      </span>
-                    </td>
-                    <td className="py-2 text-right font-medium text-gray-900">{getCurrencySymbol(quote.currency)}{quote.duties}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 text-left text-gray-700">
-                      <span className="flex items-center">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                        Dim-weight adj
-                      </span>
-                    </td>
-                    <td className="py-2 text-right font-medium text-gray-900">{getCurrencySymbol(quote.currency)}{quote.vat}</td>
-                  </tr>
-                </tbody>
-              </table>
               
-              {/* Total Row - Emphasized */}
-              <div className="border-t-2 border-gray-300 pt-3 mt-3">
-                <table className="w-full">
-                  <tbody>
-                    <tr>
-                      <td className="text-left font-semibold text-gray-900">Total Cost</td>
-                      <td className="text-right font-bold text-lg text-gray-900">{getCurrencySymbol(quote.currency)}{quote.total}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <table className="w-full">
+  <tbody>
+    {quote.prices.map((price, index) => (
+      <tr key={index} className="border-b border-gray-200 last:border-b-0">
+        <td className="py-2 text-left text-gray-700">
+          <span className="flex items-center">
+            <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
+            {price.charge}
+          </span>
+        </td>
+        <td className="py-2 text-right font-medium text-gray-900">
+          {getCurrencySymbol(quote.currency ?? "GBP")}{price.amount.toFixed(2)}
+        </td>
+      </tr>
+    ))}
+    {/* ✅ Fixed Total Row placement */}
+    <tr className="border-t-2 border-gray-300">
+      <td className="py-3 text-left font-semibold text-gray-900">Total Cost</td>
+      <td className="py-3 text-right font-bold text-lg text-gray-900">
+        {getCurrencySymbol(quote.currency ?? "GBP")}{quote.prices.reduce((sum, price) => sum + price.amount, 0).toFixed(2)}
+      </td>
+    </tr>
+  </tbody>
+</table>
             </div>
           </div>
         </div>
