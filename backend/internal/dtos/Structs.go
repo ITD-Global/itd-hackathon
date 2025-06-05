@@ -17,7 +17,7 @@ type ParcelStatus struct {
 }
 
 type ErrorResponse struct {
-	Code    int    `json:"code"`
+	Error   string `json:"error"`
 	Message string `json:"message"`
 }
 
@@ -38,9 +38,8 @@ type QuoteRequest struct {
 }
 
 type QuoteResponse struct {
-	Prices      []Price   `json:"prices"`
-	EstimatedAt time.Time `json:"estimatedAt"`
-	Currency    string    `json:"currency,omitempty"`
+	Price    float64 `json:"price"`
+	Currency string  `json:"currency"`
 }
 
 type Price struct {
