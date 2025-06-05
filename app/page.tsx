@@ -26,6 +26,7 @@ interface TrackingResult {
   location: string;
   estimatedDelivery: string;
   timeline: TrackingEvent[];
+  isError?: boolean; // Added optional isError property
 }
 
 // Enhanced Quote Generator Component with 4-step UX
@@ -389,23 +390,28 @@ function PackageTracking() {
   const handleTrack = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!trackingNumber.trim()) return;
-    
+
     setLoading(true);
     setError("");
-    
+    setTrackingResult(null);
+
     try {
-      // Call real API
+      // Fetch data
       const response = await apiClient.getTracking(trackingNumber);
-      
-      // Transform API response to frontend format
-      const latestStatus = response.history.length > 0 
-        ? response.history[response.history.length - 1].status 
-        : 'Unknown';
-      
-      // Transform history and add expected delivery as future event
-      const timeline = response.history.map(item => ({
-        status: item.status,
-        date: new Date(item.time).toLocaleDateString('en-US', {
+      const { history, expected } = response;
+
+      if (!history || history.length === 0) {
+        setError("No tracking history available.");
+        return;
+      }
+
+      const latestEvent = history[history.length - 1];
+      const isDelivered = latestEvent.status === "Parcel delivered";
+      const isUnknown = latestEvent.status === "Barcode not found";
+
+      const timeline = history.map(event => ({
+        status: event.status,
+        date: new Date(event.time).toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
           hour: 'numeric',
@@ -414,42 +420,40 @@ function PackageTracking() {
         }),
         completed: true
       }));
-      
-      // Add expected delivery as future event
-      timeline.push({
-        status: "Delivered",
-        date: new Date(response.expected).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric'
-        }) + ", Expected",
-        completed: false
-      });
-      
+
+      if (!isDelivered && !isUnknown) {
+        timeline.push({
+          status: "Delivered",
+          date: new Date(expected).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+          }) + ", Expected",
+          completed: false
+        });
+      }
+
       setTrackingResult({
-        status: latestStatus,
-        location: "In Transit", // API doesn't provide location, using generic
-        estimatedDelivery: new Date(response.expected).toLocaleDateString('en-US', {
-          weekday: 'long',
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
-        }),
-        timeline: timeline
+        status: latestEvent.status,
+        location: (() => {
+          if (isUnknown) return "Unknown";
+          if (!isDelivered) return "📍 In Transit";
+          return "";
+        })(),
+        estimatedDelivery: isUnknown
+          ? "No estimated delivery available"
+          : isDelivered ? "" : new Date(expected).toLocaleDateString('en-US', {
+              weekday: 'long',
+              month: 'short',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true
+            }),
+        timeline,
+        isError: isUnknown
       });
     } catch (err) {
-      if (err instanceof APIError) {
-        if (err.status === 404) {
-          setError("Tracking number not found. Please check and try again.");
-        } else if (err.status === 400) {
-          setError("Invalid tracking number format. Please check and try again.");
-        } else {
-          setError(`Tracking Error: ${err.message}`);
-        }
-      } else {
-        setError("Failed to track package. Please try again.");
-      }
+      setError("Failed to track package. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -467,7 +471,7 @@ function PackageTracking() {
         <div className="flex gap-3 max-w-2xl mx-auto">
           <input
             type="text"
-            placeholder="1Z999AA1234567890"
+            placeholder="SNC987654321"
             className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             value={trackingNumber}
             onChange={(e) => setTrackingNumber(e.target.value)}
@@ -492,36 +496,59 @@ function PackageTracking() {
         </div>
       )}
 
-      {trackingResult && (
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center p-6 bg-green-50 rounded-xl mb-8">
-            <div className="text-2xl font-bold text-green-600 mb-1">{trackingResult.status}</div>
-            <p className="text-green-800 mb-2">📍 {trackingResult.location}</p>
-            <p className="text-sm text-green-700">Expected: {trackingResult.estimatedDelivery}</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {trackingResult.timeline.map((event, index) => (
-              <div key={index} className="text-center relative">
-                <div className={`w-4 h-4 rounded-full mx-auto mb-3 relative z-10 ${event.completed ? 'bg-green-500' : 'bg-gray-300'}`} />
-                {/* Dotted line connecting to next step */}
-                {index < trackingResult.timeline.length - 1 && (
-                  <div className="hidden md:block absolute top-2 left-1/2 w-full h-0.5 border-t-2 border-dotted border-gray-300 transform translate-x-2 -translate-y-1/2" />
-                )}
-                <div className={`font-medium text-sm mb-1 ${event.completed ? 'text-gray-900' : 'text-gray-600'}`}>
-                  {event.status}
-                </div>
-                <div className={`text-xs ${event.completed ? 'text-gray-700' : 'text-gray-500'}`}>
-                  {event.date}
-                </div>
-              </div>
-            ))}
-          </div>
+{/* Tracking Info Display */}
+{trackingResult && (
+  <div className="flex justify-center">
+    <div className="w-full max-w-4xl">
+      <div className={`text-center p-6 rounded-xl mb-8 ${trackingResult.isError ? 'bg-red-100' : 'bg-green-50'}`}>
+        <div className={`text-2xl font-bold mb-1 ${trackingResult.isError ? 'text-red-600' : 'text-green-600'}`}>
+          {trackingResult.status}
         </div>
-      )}
+        <p className={`${trackingResult.isError ? 'text-red-800' : 'text-green-800'} mb-2`}>
+          {trackingResult.location}
+        </p>
+        {trackingResult.estimatedDelivery && (
+          <p className="text-sm text-green-700">
+            Expected: {trackingResult.estimatedDelivery}
+          </p>
+        )}
+      </div>
+
+      <div
+        className={`grid justify-center gap-4 ${
+          trackingResult.timeline.length === 1
+            ? 'grid-cols-1'
+            : trackingResult.timeline.length === 2
+            ? 'grid-cols-2'
+            : trackingResult.timeline.length === 3
+            ? 'grid-cols-3'
+            : 'grid-cols-1 md:grid-cols-4'
+        }`}
+      >
+        {trackingResult.timeline.map((event, index) => (
+          <div key={"charge-" + index} className="text-center relative">
+            <div className={`w-4 h-4 rounded-full mx-auto mb-3 relative z-10 ${event.completed ? 'bg-green-500' : 'bg-gray-300'}`} />
+            {index < trackingResult.timeline.length - 1 && (
+              <div className="hidden md:block absolute top-2 left-1/2 w-full h-0.5 border-t-2 border-dotted border-gray-300 transform translate-x-2 -translate-y-1/2" />
+            )}
+            <div className={`font-medium text-sm mb-1 ${event.completed ? 'text-gray-900' : 'text-gray-600'}`}>
+              {event.status}
+            </div>
+            <div className={`text-xs ${event.completed ? 'text-gray-700' : 'text-gray-500'}`}>
+              {event.date}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   );
 }
+
 
 export default function Home() {
   return (
